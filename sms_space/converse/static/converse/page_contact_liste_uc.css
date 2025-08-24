@@ -1,0 +1,357 @@
+/* === Base === */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to right, #f5f7fa, #eaf0ff);
+    color: #333;
+    transition: background 0.5s ease, color 0.5s ease;
+}
+
+/* === Animation d’entrée === */
+@keyframes fadeSlideUp {
+    0% {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeSlideUp 1s ease-out;
+}
+
+/* === Boutons fixes === */
+.menu-toggle, .dark-mode-toggle {
+    position: fixed;
+    top: 20px;
+    background-color: #1f6feb;
+    color: white;
+    font-size: 1.4em;
+    cursor: pointer;
+    z-index: 1100;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.menu-toggle {
+    left: 20px;
+    padding: 12px 16px;
+    border-radius: 8px;
+}
+
+.dark-mode-toggle {
+    right: 20px;
+    padding: 10px 12px;
+    border-radius: 50%;
+}
+
+/* === Sidebar === */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -260px;
+    width: 260px;
+    height: 100%;
+    background-color: #ffffff;
+    box-shadow: 2px 0 12px rgba(0,0,0,0.1);
+    transition: left 0.3s ease;
+    z-index: 1000;
+    padding-top: 60px;
+}
+
+.sidebar.active {
+    left: 0;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    margin: 15px 0;
+    padding-left: 30px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #1f6feb;
+    font-weight: 600;
+    font-size: 1.1em;
+    display: block;
+    padding: 10px 0;
+    transition: transform 0.2s ease;
+}
+
+.sidebar ul li a:hover {
+    transform: translateX(5px);
+}
+
+.sidebar ul li a:focus {
+    outline: 2px solid #1f6feb;
+    outline-offset: 2px;
+}
+
+/* === Contenu principal === */
+.main-content {
+    margin-left: 0;
+    padding: 60px 20px;
+    transition: margin-left 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-content.shifted {
+    margin-left: 260px;
+}
+
+.page-title {
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    color: #1f6feb;
+    text-align: center;
+}
+
+/* === Barre de recherche === */
+#searchInput {
+    width: 100%;
+    max-width: 500px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+/* === Liste de contacts === */
+.contact-list {
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 10px;
+}
+
+.contact-card {
+    background-color: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.3s ease;
+    flex-wrap: wrap;
+}
+
+.contact-card:hover {
+    transform: scale(1.02);
+}
+
+.contact-info {
+    flex: 1;
+    padding-right: 20px;
+}
+
+.contact-info h2 {
+    margin: 0;
+    font-size: 1.4em;
+    color: #2c3e50;
+}
+
+.contact-info p {
+    margin: 5px 0;
+    color: #555;
+}
+
+.unread-count {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 0.95em;
+    color: #1f6feb;
+    font-weight: bold;
+}
+
+/* === Bouton bloquer === */
+.block-btn {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.1s ease;
+}
+
+.block-btn:hover {
+    background-color: #cc0000;
+}
+
+.block-btn:active,
+.block-btn:focus {
+    transform: scale(0.98);
+    outline: 2px solid #ff4d4d;
+    outline-offset: 2px;
+}
+
+/* === Message vide === */
+.no-contact {
+    font-size: 1.2em;
+    color: #999;
+    margin-top: 40px;
+}
+
+/* === Mode sombre === */
+body.dark-mode {
+    background: linear-gradient(to right, #1e1e2f, #2c2c3c);
+    color: #f0f0f0;
+    transition: background 0.5s ease, color 0.5s ease;
+}
+
+body.dark-mode .sidebar {
+    background-color: #2c2c3c;
+}
+
+body.dark-mode .sidebar ul li a {
+    color: #f0f0f0;
+}
+
+body.dark-mode .page-title {
+    color: #9ecbff;
+}
+
+body.dark-mode #searchInput {
+    background-color: #3a3a4a;
+    color: #f0f0f0;
+    border: 1px solid #555;
+}
+
+body.dark-mode .contact-card {
+    background-color: #2c2c3c;
+}
+
+body.dark-mode .contact-info h2,
+body.dark-mode .contact-info p {
+    color: #f0f0f0;
+}
+
+body.dark-mode .unread-count {
+    color: #9ecbff;
+}
+
+body.dark-mode .block-btn {
+    background-color: #ff4d4d;
+}
+
+body.dark-mode .block-btn:hover {
+    background-color: #cc0000;
+}
+
+/* === Responsive === */
+@media screen and (max-width: 768px) {
+    .main-content.shifted {
+        margin-left: 0;
+    }
+
+    .sidebar {
+        width: 100%;
+        left: -100%;
+    }
+
+    .sidebar.active {
+        left: 0;
+    }
+
+    .contact-list {
+        max-width: 100%;
+    }
+
+    .contact-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .block-btn {
+        align-self: flex-end;
+        margin-top: 10px;
+    }
+
+    #searchInput {
+        max-width: 90%;
+    }
+}
+
+
+
+
+.no-contact {
+    color: #555;
+    font-size: 1.2em;
+    font-weight: 500;
+    text-align: center;
+    margin-top: 40px;
+    padding: 15px;
+    background-color: #f3f0ff;
+    border: 1px solid #dcd6f7;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+
+
+
+.blocked-message {
+    color: #ff4d4d;
+    font-weight: bold;
+    font-size: 1em;
+    margin-top: 10px;
+}
+
+
+
+.contact-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+
+
+
+.chat-btn {
+    background-color: #1f6feb;
+    color: white;
+    text-decoration: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background 0.3s ease, transform 0.1s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    display: inline-block;
+}
+
+.chat-btn:hover {
+    background-color: #155ab6;
+    transform: scale(1.02);
+}
+
+.chat-btn:focus,
+.chat-btn:active {
+    outline: 2px solid #1f6feb;
+    outline-offset: 2px;
+    transform: scale(0.98);
+}
+
+
+
+

@@ -1,0 +1,263 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f5f7fa;
+    color: #333;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* Animation d'entrée */
+@keyframes fadeSlideUp {
+    0% {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    60% {
+        opacity: 1;
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeSlideUp 1s ease-out;
+}
+
+/* Boutons */
+.menu-toggle, .dark-mode-toggle {
+    position: fixed;
+    top: 20px;
+    background-color: #1f6feb;
+    color: white;
+    font-size: 1.2em;
+    cursor: pointer;
+    z-index: 1100;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.menu-toggle {
+    left: 20px;
+    padding: 12px 16px;
+    border-radius: 8px;
+}
+
+.dark-mode-toggle {
+    right: 20px;
+    padding: 10px 12px;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+}
+
+.dark-mode-toggle:hover {
+    transform: rotate(20deg);
+}
+
+/* Menu latéral */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -260px;
+    width: 260px;
+    height: 100%;
+    background-color: #ffffff;
+    box-shadow: 2px 0 12px rgba(0,0,0,0.1);
+    transition: left 0.3s ease, opacity 0.3s ease;
+    z-index: 1000;
+    padding-top: 60px;
+    opacity: 0;
+}
+
+.sidebar.active {
+    left: 0;
+    opacity: 1;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    margin: 15px 0;
+    padding-left: 30px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #1f6feb;
+    font-weight: 600;
+    font-size: 1.1em;
+    display: block;
+    padding: 10px 0;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.sidebar ul li a:hover {
+    background-color: #e6f0ff;
+    transform: translateX(5px);
+}
+
+/* Contenu principal */
+.main-content {
+    margin-left: 0;
+    padding: 60px 40px;
+    transition: margin-left 0.3s ease;
+    text-align: center;
+}
+
+.main-content.shifted {
+    margin-left: 260px;
+}
+
+/* Titre */
+.welcome {
+    font-size: 2.4em;
+    margin-bottom: 30px;
+    color: #2c3e50;
+}
+
+.highlight {
+    color: #1f6feb;
+}
+
+/* Carte profil */
+.profil-card {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: left;
+    transition: transform 0.3s ease;
+}
+
+.profil-card:hover {
+    transform: scale(1.02);
+}
+
+.profil-title {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    color: #2c3e50;
+    text-align: center;
+}
+
+.profil-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.profil-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.label {
+    font-weight: 600;
+    color: #2c3e50;
+    flex: 1;
+}
+
+.value {
+    color: #1f6feb;
+    flex: 2;
+    text-align: right;
+    word-break: break-word;
+}
+
+/* Bouton Modifier */
+.modifier-container {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.modifier-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #1f6feb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.modifier-btn:hover {
+    background-color: #155ab6;
+}
+
+/* Mode sombre */
+body.dark-mode {
+    background-color: #1e1e2f;
+    color: #f0f0f0;
+}
+
+body.dark-mode .sidebar {
+    background-color: #2c2c3c;
+}
+
+body.dark-mode .sidebar ul li a {
+    color: #f0f0f0;
+}
+
+body.dark-mode .profil-card {
+    background-color: #2c2c3c;
+}
+
+body.dark-mode .label {
+    color: #f0f0f0;
+}
+
+body.dark-mode .value {
+    color: #9ecbff;
+}
+
+body.dark-mode .menu-toggle,
+body.dark-mode .dark-mode-toggle {
+    background-color: #444;
+    color: #f0f0f0;
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+    .main-content.shifted {
+        display: none;
+    }
+
+    .sidebar {
+        width: 100%;
+        left: -100%;
+    }
+
+    .sidebar.active {
+        left: 0;
+    }
+
+    .profil-card {
+        margin: 20px;
+        padding: 20px;
+    }
+
+    .profil-list li {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .label, .value {
+        text-align: left;
+        width: 100%;
+    }
+
+    .modifier-btn {
+        width: 100%;
+    }
+}

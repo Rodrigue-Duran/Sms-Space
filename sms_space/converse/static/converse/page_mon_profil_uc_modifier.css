@@ -1,0 +1,217 @@
+/* Reset & base */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to right, #f5f7fa, #eaf0ff);
+    color: #333;
+    transition: background 0.5s ease, color 0.5s ease;
+}
+
+/* Animation d’entrée */
+@keyframes fadeSlideUp {
+    0% {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeSlideUp 1s ease-out;
+}
+
+/* Boutons fixes */
+.menu-toggle, .dark-mode-toggle {
+    position: fixed;
+    top: 20px;
+    background-color: #1f6feb;
+    color: white;
+    font-size: 1.4em;
+    cursor: pointer;
+    z-index: 1100;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.menu-toggle {
+    left: 20px;
+    padding: 12px 16px;
+    border-radius: 8px;
+}
+
+.dark-mode-toggle {
+    right: 20px;
+    padding: 10px 12px;
+    border-radius: 50%;
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -260px;
+    width: 260px;
+    height: 100%;
+    background-color: #ffffff;
+    box-shadow: 2px 0 12px rgba(0,0,0,0.1);
+    transition: left 0.3s ease;
+    z-index: 1000;
+    padding-top: 60px;
+}
+
+.sidebar.active {
+    left: 0;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    margin: 15px 0;
+    padding-left: 30px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #1f6feb;
+    font-weight: 600;
+    font-size: 1.1em;
+    display: block;
+    padding: 10px 0;
+    transition: transform 0.2s ease;
+}
+
+.sidebar ul li a:hover {
+    transform: translateX(5px);
+}
+
+/* Contenu principal */
+.main-content {
+    margin-left: 0;
+    padding: 60px 20px;
+    transition: margin-left 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-content.shifted {
+    margin-left: 260px;
+}
+
+/* Titre */
+.page-title {
+    font-size: 2.5em;
+    margin-bottom: 40px;
+    color: #1f6feb;
+    text-align: center;
+}
+
+.page-title span {
+    color: #2c3e50;
+}
+
+/* Carte formulaire */
+.form-card {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    max-width: 600px;
+    width: 100%;
+    animation: fadeSlideUp 1s ease;
+}
+
+.form-card h2 {
+    margin-bottom: 30px;
+    color: #2c3e50;
+    text-align: center;
+}
+
+/* Champs */
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #2c3e50;
+    font-size: 1.1em;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    border-color: #1f6feb;
+    outline: none;
+}
+
+/* Bouton */
+.submit-btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background-color: #1f6feb;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #155ab6;
+}
+
+/* Mode sombre */
+body.dark-mode {
+    background: linear-gradient(to right, #1e1e2f, #2c2c3c);
+    color: #f0f0f0;
+}
+
+body.dark-mode .sidebar {
+    background-color: #2c2c3c;
+}
+
+body.dark-mode .sidebar ul li a {
+    color: #f0f0f0;
+}
+
+body.dark-mode .form-card {
+    background-color: #2c2c3c;
+    color: #f0f0f0;
+}
+
+body.dark-mode .form-group label {
+    color: #f0f0f0;
+}
+
+body.dark-mode .form-group input {
+    background-color: #3a3a4a;
+    color: #f0f0f0;
+    border: 1px solid #555;
+}
+
+body.dark-mode .submit-btn {
+    background-color: #3a7bd5;
+}
+
+body.dark-mode .submit-btn:hover {
+    background-color: #2e5fa7;
+}

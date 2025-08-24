@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Accueil Utilisateur</title>
+    <link rel="stylesheet" href="{% static 'converse/page_accueil_uc.css' %}">
+</head>
+<body>
+    <!-- Bouton menu -->
+    <div class="menu-toggle" onclick="toggleSidebar()" aria-label="Ouvrir le menu" role="button">☰</div>
+
+    <!-- Bouton mode sombre -->
+    <div class="dark-mode-toggle" onclick="toggleDarkMode()" aria-label="Activer le mode sombre" role="button">🌓</div>
+
+    <!-- Menu latéral -->
+    <nav class="sidebar" id="sidebar" role="navigation">
+        <ul>
+            <li><a href="{% url 'page_accueil_uc' user.id %}">🏠 Accueil</a></li>
+            <li><a href="{% url 'page_mon_profil_uc' user.id %}">👤 Mon profil</a></li>
+            <li><a href="{% url 'page_contact_liste_uc' user.id %}">📇 Contacts</a></li>
+            <li><a href="{% url 'page_rechercher_uc_uc' user.id %}">🔍 Rechercher</a></li>
+            <li><a href="{% url 'page_signaler_probleme_uc' user.id %}">⚠️ Signaler un problème</a></li>
+            <li><a href="{% url 'page_demandes_recus_uc' user.id %}">📥 Demandes reçues</a></li>
+            <li><a href="{% url 'page_demandes_envoyees_uc' user.id %}">📤 Demandes envoyées</a></li>
+            <li><a href="{% url 'page_se_deconnecter_uc' user.id %}">🚪 Se déconnecter</a></li>
+        </ul>
+    </nav>
+
+    <!-- Contenu principal -->
+    <main class="main-content" id="mainContent">
+        <h1 class="welcome">Bienvenue <span class="highlight">{{ user.pseudo }}</span></h1>
+        <div class="info-box">
+            <p>📩 Vous avez <strong>{{ messages_non_lus }}</strong> message(s) non lu(s)</p>
+            <p>💬 Vous avez <strong>{{ demandes_recues }}</strong> demande(s) de conversation</p>
+        </div>
+    </main>
+
+    <!-- JS intégré -->
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const main = document.getElementById('mainContent');
+            sidebar.classList.toggle('active');
+            main.classList.toggle('shifted');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+
+        
+    // Appliquer le mode au chargement
+    document.addEventListener("DOMContentLoaded", function () {
+        const mode = localStorage.getItem("theme");
+        if (mode === "dark") {
+            document.body.classList.add("dark-mode");
+        }
+    });
+
+    // Basculer le mode et sauvegarder
+    function toggleDarkMode() {
+        document.body.classList.toggle("dark-mode");
+        const isDark = document.body.classList.contains("dark-mode");
+        localStorage.setItem("theme", isDark ? "dark" : "light");
+    }
+
+
+    </script>
+</body>
+</html>

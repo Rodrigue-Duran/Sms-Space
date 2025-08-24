@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifier Mon Profil</title>
+    <link rel="stylesheet" href="{% static 'converse/page_mon_profil_uc_modifier.css' %}">
+</head>
+<body>
+    <div class="menu-toggle" onclick="toggleSidebar()">☰</div>
+    <div class="dark-mode-toggle" onclick="toggleDarkMode()">🌓</div>
+
+    <nav class="sidebar" id="sidebar">
+        <ul>
+            <li><a href="{% url 'page_accueil_uc' user.id %}">🏠 Accueil</a></li>
+            <li><a href="{% url 'page_mon_profil_uc' user.id %}">👤 Mon profil</a></li>
+            <li><a href="{% url 'page_contact_liste_uc' user.id %}">📇 Contacts</a></li>
+            <li><a href="{% url 'page_rechercher_uc_uc' user.id %}">🔍 Rechercher</a></li>
+            <li><a href="{% url 'page_signaler_probleme_uc' user.id %}">⚠️ Signaler un problème</a></li>
+            <li><a href="{% url 'page_demandes_recus_uc' user.id %}">📥 Demandes reçues</a></li>
+            <li><a href="{% url 'page_demandes_envoyees_uc' user.id %}">📤 Demandes envoyées</a></li>
+            <li><a href="{% url 'page_se_deconnecter_uc' user.id %}">🚪 Se déconnecter</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content fade-in" id="mainContent">
+        <h1 class="page-title">✨ Modifier le profil de <span>{{ user.pseudo }}</span></h1>
+
+        <form method="POST" class="form-card">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="pseudo">🧑 Pseudo</label>
+                <input type="text" name="pseudo" id="pseudo" value="{{ user.pseudo }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">📧 Email</label>
+                <input type="email" name="adresse_mail" id="email" value="{{ user.adresse_mail }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="nom">👤 Nom</label>
+                <input type="text" name="nom" id="nom" value="{{ user.nom }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="prenom">🧒 Prénom</label>
+                <input type="text" name="prenom" id="prenom" value="{{ user.prenom }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="mot_de_passe">🔒 Mot de passe</label>
+                <input type="password" name="mot_de_passe" id="mot_de_passe" placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" class="submit-btn">💾 Enregistrer</button>
+        </form>
+    </main>
+
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('mainContent').classList.toggle('shifted');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+    </script>
+</body>
+</html>

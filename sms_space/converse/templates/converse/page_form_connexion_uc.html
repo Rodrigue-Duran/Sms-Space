@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Connexion Utilisateur</title>
+    <link rel="stylesheet" href="{% static 'converse/page_form_connexion_uc.css' %}">
+    <script>
+        function validateForm() {
+            const pseudo = document.getElementById('pseudo').value;
+            const password = document.getElementById('mot_de_passe').value;
+            if (!pseudo || !password) {
+                alert("Veuillez remplir tous les champs.");
+                return false;
+            }
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <div class="form-container">
+        <h1 class="form-title">Bienvenue sur <span class="highlight">SMS Space</span></h1>
+        <form action="{% url 'page_form_connexion_uc' %}" method="post">
+            {% csrf_token %}
+
+
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <p class="message {{ message.tags }}">{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+
+
+
+            <input type="text" name="pseudo" id="pseudo" placeholder="Pseudo" required>
+            <input type="password" name="mot_de_passe" id="mot_de_passe" placeholder="Mot de passe" required>
+
+            <div class="button-row">
+                <a href="/page_accueil_principal/">
+                    <button type="button" class="btn-retour">Retour à l'accueil</button>
+                </a>
+                <button type="submit" class="btn-connect">Se connecter</button>
+            </div>
+        </form>
+
+        <div class="signup-link">
+            <p>Pas encore de compte ? <a href="{% url 'page_form_inscription_uc' %}">Créer un compte</a></p>
+        </div>
+    </div>
+</body>
+</html>

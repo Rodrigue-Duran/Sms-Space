@@ -1,0 +1,29 @@
+# Fichiers Python compilés
+__pycache__/
+*.py[cod]
+*.so
+
+# Base de données SQLite
+db.sqlite3
+
+# Fichiers de logs
+*.log
+
+# Environnement virtuel
+venv/
+env/
+
+# Fichiers de configuration locaux
+*.env
+
+# Dossiers de migration compilés
+*/migrations/__pycache__/
+
+# Fichiers statiques générés
+staticfiles/
+media/
+
+# Fichiers de l’IDE
+.vscode/
+.idea/
+*.swp

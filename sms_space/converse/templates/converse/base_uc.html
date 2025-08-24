@@ -1,0 +1,16 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Page UC{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'converse/menu_uc.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    {% include 'converse/menu_uc.html' %}
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

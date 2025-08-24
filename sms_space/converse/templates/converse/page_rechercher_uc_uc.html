@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>🔍 Rechercher un utilisateur</title>
+    <link rel="stylesheet" href="{% static 'converse/page_rechercher_uc_uc.css' %}">
+</head>
+<body>
+    <div class="menu-toggle" onclick="toggleSidebar()">☰</div>
+    <div class="dark-mode-toggle" onclick="toggleDarkMode()">🌓</div>
+
+    <nav class="sidebar" id="sidebar">
+        <ul>
+            <li><a href="{% url 'page_accueil_uc' user.id %}">🏠 Accueil</a></li>
+            <li><a href="{% url 'page_mon_profil_uc' user.id %}">👤 Mon profil</a></li>
+            <li><a href="{% url 'page_contact_liste_uc' user.id %}">📇 Contacts</a></li>
+            <li><a href="{% url 'page_rechercher_uc_uc' user.id %}">🔍 Rechercher</a></li>
+            <li><a href="{% url 'page_signaler_probleme_uc' user.id %}">⚠️ Signaler un problème</a></li>
+            <li><a href="{% url 'page_demandes_recus_uc' user.id %}">📥 Demandes reçues</a></li>
+            <li><a href="{% url 'page_demandes_envoyees_uc' user.id %}">📤 Demandes envoyées</a></li>
+            <li><a href="{% url 'page_se_deconnecter_uc' user.id %}">🚪 Se déconnecter</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content fade-in" id="mainContent">
+        <h1 class="page-title">🔍 Rechercher un utilisateur</h1>
+
+        {% if confirmation %}
+            <div class="confirmation-message">
+                ✅ Demande envoyée avec succès à {{ confirmation }} !
+            </div>
+        {% endif %}
+
+        <form method="GET">
+            <input type="text" id="searchInput" name="q" placeholder="🔍 Rechercher par pseudo..." value="{{ request.GET.q }}" data-user-id="{{ user.id }}">
+        </form>
+
+        <div class="result-list" id="resultList">
+            {% for utilisateur in resultats %}
+                <div class="result-card">
+                    <div class="result-info">
+                        <h2>{{ utilisateur.pseudo }}</h2>
+                        <p>{{ utilisateur.nom }} {{ utilisateur.prenom }}</p>
+                        {% if utilisateur.id in demandes_en_attente %}
+                            <span class="etat-demande">⏳ En attente d'acceptation</span>
+                        {% endif %}
+                    </div>
+                    {% if utilisateur.id not in demandes_en_attente %}
+                        <form method="POST" action="{% url 'page_rechercher_uc_uc' user.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="receveur_id" value="{{ utilisateur.id }}">
+                            <button type="submit" class="send-request-btn">📨 Envoyer une demande</button>
+                        </form>
+                    {% endif %}
+                </div>
+            {% empty %}
+                <p class="no-result">😕 Aucun utilisateur trouvé.</p>
+            {% endfor %}
+        </div>
+    </main>
+
+    <script>
+        // Appliquer le mode au chargement
+        document.addEventListener("DOMContentLoaded", function () {
+            const mode = localStorage.getItem("theme");
+            if (mode === "dark") {
+                document.body.classList.add("dark-mode");
+            }
+
+            const input = document.getElementById('searchInput');
+            input.addEventListener('input', function () {
+                const query = input.value;
+                const userId = input.dataset.userId;
+
+                fetch(`/ajax/rechercher_uc/${userId}/?q=` + encodeURIComponent(query))
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('resultList').innerHTML = data.html;
+                    });
+            });
+        });
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('mainContent').classList.toggle('shifted');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains("dark-mode");
+            localStorage.setItem("theme", isDark ? "dark" : "light");
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,10 @@
+{% for message in messages %}
+    <div class="message {% if message.expediteur.id == user.id %}sent{% else %}received{% endif %}">
+        <div class="bubble">
+            <p>{{ message.contenu }}</p>
+            <span class="timestamp">{{ message.date_envoie|date:"H:i d/m/Y" }}</span>
+        </div>
+    </div>
+{% empty %}
+    <p class="no-message">📭 Aucun message pour le moment.</p>
+{% endfor %}

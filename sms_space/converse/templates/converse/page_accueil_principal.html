@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>SMS Space</title>
+    <link rel="stylesheet" href="{% static 'converse/page_accueil_principal.css' %}">
+    <script>
+        function highlightButton(id) {
+            const btn = document.getElementById(id);
+            btn.classList.add('active');
+            setTimeout(() => btn.classList.remove('active'), 1000);
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="welcome">Bienvenue sur <span class="highlight">SMS Space</span></h1>
+
+        <div class="button-row">
+            <a href="/admin/" class="btn-link">
+                <button id="admin-btn" onclick="highlightButton('admin-btn')">Espace Admin</button>
+            </a>
+            <a href="{% url 'page_form_connexion_uc' %}" class="btn-link">
+                <button id="user-btn" onclick="highlightButton('user-btn')">Espace Utilisateur</button>
+            </a>
+        </div>
+
+        <div class="contact-btn">
+            <a href="/contact/" class="btn-link">
+                <button id="contact-btn" onclick="highlightButton('contact-btn')">Contactez l'équipe de développement</button>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

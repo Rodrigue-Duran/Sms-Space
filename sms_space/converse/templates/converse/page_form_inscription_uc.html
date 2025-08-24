@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Inscription Utilisateur</title>
+    <link rel="stylesheet" href="{% static 'converse/page_form_inscription_uc.css' %}">
+    <script>
+        function validateForm() {
+            const pseudo = document.getElementById('pseudo').value;
+            const email = document.getElementById('adresse_mail').value;
+            const password = document.getElementById('mot_de_passe').value;
+            if (!pseudo || !email || !password) {
+                alert("Veuillez remplir tous les champs obligatoires.");
+                return false;
+            }
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <div class="form-container">
+        <h1 class="form-title">Créer un compte <span class="highlight">SMS Space</span></h1>
+        <form action="" method="post" onsubmit="return validateForm();">
+            {% csrf_token %}
+
+
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="alert {{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+
+
+
+            <input type="text" name="nom" placeholder="Nom" required>
+            <input type="text" name="prenom" placeholder="Prénom" required>
+            <input type="text" name="pseudo" id="pseudo" placeholder="Pseudo" required>
+            <input type="email" name="adresse_mail" id="adresse_mail" placeholder="Adresse mail" required>
+            <input type="password" name="mot_de_passe" id="mot_de_passe" placeholder="Mot de passe" required>
+
+            <div class="button-row">
+                <a href="/page_accueil_principal/">
+                    <button type="button" class="btn-retour">Retour à l'accueil</button>
+                </a>
+                <button type="submit" class="btn-connect">S'inscrire</button>
+            </div>
+        </form>
+
+        <div class="signup-link">
+            <p>Déjà un compte ? <a href="{% url 'page_form_connexion_uc' %}">Se connecter</a></p>
+        </div>
+    </div>
+</body>
+</html>

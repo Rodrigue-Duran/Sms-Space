@@ -1,0 +1,166 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Conversation avec {{ autre.pseudo }}</title>
+    <link rel="stylesheet" href="{% static 'converse/page_contact_particulier_uc.css' %}">
+</head>
+<body>
+    <div class="menu-toggle" onclick="toggleSidebar()">☰</div>
+    <div class="dark-mode-toggle" onclick="toggleDarkMode()">🌓</div>
+
+    <nav class="sidebar" id="sidebar">
+        <ul>
+            <li><a href="{% url 'page_accueil_uc' user.id %}">🏠 Accueil</a></li>
+            <li><a href="{% url 'page_mon_profil_uc' user.id %}">👤 Mon profil</a></li>
+            <li><a href="{% url 'page_contact_liste_uc' user.id %}">📇 Contacts</a></li>
+            <li><a href="{% url 'page_rechercher_uc_uc' user.id %}">🔍 Rechercher</a></li>
+            <li><a href="{% url 'page_signaler_probleme_uc' user.id %}">⚠️ Signaler un problème</a></li>
+            <li><a href="{% url 'page_demandes_recus_uc' user.id %}">📥 Demandes reçues</a></li>
+            <li><a href="{% url 'page_demandes_envoyees_uc' user.id %}">📤 Demandes envoyées</a></li>
+            <li><a href="{% url 'page_se_deconnecter_uc' user.id %}">🚪 Se déconnecter</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content fade-in" id="mainContent">
+        <h1 class="page-title">💬 Conversation avec {{ autre.pseudo }}</h1>
+
+        
+            <div class="chat-box" id="chat-box">
+                {% include 'converse/messages_ajax.html' %}
+            </div>
+
+       
+
+        <form id="messageForm" class="message-form">
+            {% csrf_token %}
+            <textarea name="text" id="messageInput" placeholder="✍️ Écris ton message..." required></textarea>
+            <button type="submit" class="chat-btn">📤 Envoyer</button>
+        </form>
+        <div id="typing-indicator" style="font-style: italic; color: gray; margin-top: 5px;"></div>
+
+
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const mode = localStorage.getItem("theme");
+            if (mode === "dark") {
+                document.body.classList.add("dark-mode");
+            }
+        });
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('mainContent').classList.toggle('shifted');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains("dark-mode");
+            localStorage.setItem("theme", isDark ? "dark" : "light");
+        }
+    </script>
+
+    <audio id="sendSound" src="{% static 'sounds/send.wav' %}" preload="auto"></audio>
+    <audio id="receiveSound" src="{% static 'sounds/receive.wav' %}" preload="auto"></audio>
+
+    <script>
+        const form = document.querySelector('.message-form');
+        const sound = document.getElementById('sendSound');
+
+        form.addEventListener('submit', () => {
+            sound.play();
+        });
+    </script>
+
+
+    <script>
+        let dernierContenu = "";
+
+        function rafraichirMessages() {
+            fetch(`/messages_ajax/{{ user.id }}/{{ autre.id }}/`)
+                .then(response => response.text())
+                .then(html => {
+                    if (html !== dernierContenu) {
+                        const chatBox = document.getElementById("chat-box");
+                        chatBox.innerHTML = html;
+                        dernierContenu = html;
+
+                        // Scroll automatique avec délai
+                        setTimeout(() => {
+                            chatBox.scrollTop = chatBox.scrollHeight;
+                        }, 100);
+                    }
+                });
+
+                fetch(`/get_typing_status/{{ user.id }}/{{ autre.id }}/`)
+    .then(response => response.json())
+    .then(data => {
+        const typingIndicator = document.getElementById("typing-indicator");
+        typingIndicator.innerText = data.typing ? `${data.nom} est en train d’écrire...` : "";
+    });
+
+        }
+
+        setInterval(rafraichirMessages, 1000);
+        
+    </script>
+
+    <script>
+        document.getElementById("messageForm").addEventListener("submit", function(e) {
+            e.preventDefault(); // empêche le rechargement
+
+            const text = document.getElementById("messageInput").value;
+            if (!text.trim()) return;
+
+            fetch("{% url 'envoyer_message_uc' user.id autre.id %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: new URLSearchParams({ text: text })
+            })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById("messageInput").value = "";
+                    rafraichirMessages(); // recharge les messages
+                    document.getElementById("sendSound").play(); // joue le son
+                }
+            });
+        });
+    </script>
+
+    <script>
+        let typingTimeout;
+
+        document.getElementById("messageInput").addEventListener("input", function() {
+            clearTimeout(typingTimeout);
+
+            fetch(`/set_typing_status/{{ user.id }}/{{ autre.id }}/`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: new URLSearchParams({ typing: "true" })
+            });
+
+            typingTimeout = setTimeout(() => {
+                fetch(`/set_typing_status/{{ user.id }}/{{ autre.id }}/`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                        "X-CSRFToken": "{{ csrf_token }}"
+                    },
+                    body: new URLSearchParams({ typing: "false" })
+                });
+            }, 3000);
+        });
+
+    </script>
+
+</body>
+</html>
